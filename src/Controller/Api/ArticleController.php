@@ -47,6 +47,8 @@ class ArticleController extends AbstractFOSRestController
 
     	$articles = $this->articleServiceObject->getArticlesList();
 
+        
+
     	return View::create($articles, Response::HTTP_OK);
     }
 

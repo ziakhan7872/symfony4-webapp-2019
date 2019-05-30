@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+
+        {% block stylesheets %} {% endblock %}
+    </head>
+    <div class="container">
+    <body>
+        
+        <nav class="navbar navbar-expand-sm bg-info">
+  <ul class="navbar-nav">
+   
+    <li style="color:white">
+      <a class="nav-link" href="{{url('welcome')}}" style="text-decoration: none;color:white"><dt>Home</dt></a>
+      </li>
+
+      {% if app.user and is_granted('ROLE_ADMIN') %}
+         <li>
+            <a class="nav-link" href="{{ url('admin_dashboard') }}"style="text-decoration: none;color:white"><dt>Admin Panel</dt></a>
+        </li>
+      {% endif %}
+   
+    {% if app.user == null %}
+
+      <li class="nav-item">
+        <a class="nav-link" href="{{ url('app_register')}}" style="text-decoration: none;color:white">
+          <dt>Register </dt></a>
+      </li>
+       <li class="nav-item">
+        <a class="nav-link" href="{{ url('app_login')}}"style="text-decoration: none;color:white"><dt>Login</dt></a>
+      </li>
+  
+    {% endif %}
+
+
+    {% if app.user %}
+      <li>
+      <a class="nav-link" href="{{ url('app_logout') }}"style="text-decoration: none;color:white"><dt>Logout</dt></a>
+      </li>
+
+  {% endif %}
+
+  <li class="nav-item">
+        <a class="nav-link" href="{{ url('article_new')}}"style="text-decoration: none;color:white">
+          <dt>Add Article</dt></a>
+      </li>
+  
+   {% if app.user and is_granted('ROLE_USER') %}
+
+  <li class="nav-item">
+        <a class="nav-link" href="{{ url('article_index')}}"style="text-decoration: none;color:white">
+          <dt>My Articles</dt></a>
+      </li>
+    {% endif %}
+ </ul>
+</nav>
+ 
+        {% block body %}{% endblock %}
+          
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+    </div>
+</html>

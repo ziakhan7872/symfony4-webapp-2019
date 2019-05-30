@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Article index{% endblock %}
+
+{% block body %}
+    <h3 class="text-center">Article index</h3>
+
+   <table class="table table-bordered">
+        <thead>
+            <tr>
+               {#  <th>Id</th> #}
+                <th>Title</th>
+                <th>Category Name</th>
+                <th>Image</th>
+                <th>Description</th>
+                 <th>Slug</th>
+                <th colspan="3">actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                {# <td>{{ article.id }}</td> #}
+                <td>{{ article.title }}</td>
+                <td>{{ article.category }}</td>
+                <td><img src="{{ url('welcome') }}{{ asset('/uploads/')}}{{ article.image }}" width="100" height="100"></td>
+                <td>{{ article.description|slice(0, 50)|raw}}</td>
+                <td>{{ article.slug }}</td>
+             
+                <td>
+                    <a href="{{ path('article_show', {'id': article.id}) }}" class="btn btn-primary">show</a></td>
+                    <td>
+                    <a href="{{ path('article_edit', {'id': article.id}) }}" class="btn btn-success">edit</a>
+                    
+                </td>
+                <td>
+                   <form method="post" action="{{ path('article_delete', {'id': article.id}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ article.id) }}">
+    <button class="btn btn-danger">Delete</button>
+</form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('article_new') }}" class="btn btn-info">Create new</a>
+{% endblock %}

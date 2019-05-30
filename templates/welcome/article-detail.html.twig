@@ -1,0 +1,104 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello WelcomeController!{% endblock %}
+
+{% block body %}
+
+<div class="container">{#  detail part #}
+<div class="row">
+<div class="col-md-12">
+<div class="card">
+      <img class="card-img-top" src="{{ url('welcome') }}{{ asset('/uploads/')}}{{ item.image }}" alt="{{item.title}}">
+      <div class="card-body">
+          <h5 class="card-title">{{item.title}}</h5>
+          <p class="card-text">{{item.description | slice(0,200)|raw }}</p>
+          <a href="{{ path('welcome') }}" class="btn btn-primary">Go Back</a>
+          <button class="btn btn-success" onclick="upVote({{item.id}})">Up Vote</button>
+          <div id="vote_up">{{item.voteUp}}</div>
+        <button class="btn btn-danger" onclick="downVote({{item.id}})">Down Vote</button>
+        <div id="vote_down">{{item.votedown}}</div>
+      </div>
+</div>
+</div>
+</div>
+{#close welcome page details part#}
+
+
+{# comment section#}
+<div class="row">
+  <div class="col-md-12">
+    <div class="list-group">
+      {% for item in comments %} 
+          <a href="#" class="list-group-item list-group-item-action flex-column align-items-start">   
+          <div class="form-group">{{ item.comment }}</div>   
+          </a>
+     {% endfor %}
+    </div>
+  </div>
+
+      {{ form_start(form, {'action':path('save_comment')}) }}
+      {{ form_widget(form) }}
+          <input type="hidden" name="article_id" value="{{item.id}}">
+          <button class="btn">{{ button_label|default('Save') }}</button>
+      {{ form_end(form) }}
+</div>
+
+
+{#end comment section#}
+
+<script type="text/javascript">
+
+function upVote(id){
+  //alert(id)
+   
+  $.ajax({
+        method:"POST", 
+        url: '{{ path("up_vote") }}',
+        data: {article_id: id}
+  }).done(function(responseFromServer){
+   console.log(responseFromServer)
+
+      if(responseFromServer.status==true){
+        //alert("updated")
+        $("#vote_up").empty().append(responseFromServer.voteUp)
+        
+      }else{
+        alert('not updated')
+      }
+  });
+}
+
+
+
+
+
+function downVote(id){
+  //alert(id)
+
+//confirm if start
+if(confirm('Are you sure you want to down vote?')){
+
+  //ajax request initiated
+  $.ajax({
+        method:"POST", 
+        url: '{{ path("down_vote") }}',
+        data: {article_id: id}
+  }).done(function(responseFromServer){
+      
+      console.log(responseFromServer)
+
+      if(responseFromServer.status==true){
+        $('#vote_down').empty().append(responseFromServer.votedown)
+        //alert("updated")
+        
+      }else{
+        alert('not updated')
+      }
+  });
+
+};//confirm if cloase
+
+}
+
+</script>
+{% endblock %}

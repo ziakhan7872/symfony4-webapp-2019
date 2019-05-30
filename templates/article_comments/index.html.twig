@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ArticleComments index{% endblock %}
+
+{% block body %}
+    <h1>ArticleComments index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>User_id</th>
+                <th>Article_id</th>
+                <th>Status</th>
+                <th>Comment</th>
+                <th>Created_at</th>
+                <th>Updated_at</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article_comment in article_comments %}
+            <tr>
+                <td>{{ article_comment.id }}</td>
+                <td>{{ article_comment.userId }}</td>
+                <td>{{ article_comment.articleId }}</td>
+                <td>{{ article_comment.status }}</td>
+                <td>{{ article_comment.comment }}</td>
+                <td>{{ article_comment.createdAt ? article_comment.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ article_comment.updatedAt ? article_comment.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('article_comments_show', {'id': article_comment.id}) }}">show</a>
+                    <a href="{{ path('article_comments_edit', {'id': article_comment.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="8">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('article_comments_new') }}">Create new</a>
+{% endblock %}

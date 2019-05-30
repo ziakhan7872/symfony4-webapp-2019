@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ArticleComments{% endblock %}
+
+{% block body %}
+    <h1>ArticleComments</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ article_comment.id }}</td>
+            </tr>
+            <tr>
+                <th>User_id</th>
+                <td>{{ article_comment.userId }}</td>
+            </tr>
+            <tr>
+                <th>Article_id</th>
+                <td>{{ article_comment.articleId }}</td>
+            </tr>
+            <tr>
+                <th>Status</th>
+                <td>{{ article_comment.status }}</td>
+            </tr>
+            <tr>
+                <th>Comment</th>
+                <td>{{ article_comment.comment }}</td>
+            </tr>
+            <tr>
+                <th>Created_at</th>
+                <td>{{ article_comment.createdAt ? article_comment.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Updated_at</th>
+                <td>{{ article_comment.updatedAt ? article_comment.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('article_comments_index') }}">back to list</a>
+
+    <a href="{{ path('article_comments_edit', {'id': article_comment.id}) }}">edit</a>
+
+    {{ include('article_comments/_delete_form.html.twig') }}
+{% endblock %}
